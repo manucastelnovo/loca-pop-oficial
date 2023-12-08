@@ -50,7 +50,6 @@ class Article(db.Model):
     name=db.Column(db.String(50))
     price=db.Column(db.Integer)
 
-
 with app.app_context():
     db.create_all()
 
