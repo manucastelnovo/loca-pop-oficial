@@ -55,6 +55,10 @@ with app.app_context():
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+@app.route('/', methods=['GET'])
+def primera():
+    return redirect(url_for('index'))
+
 
 @app.route('/login', methods=['GET','POST'])
 def index():
@@ -85,10 +89,17 @@ def register():
 @login_required
 def update_status_qr(qr_data):
     token=qr_data
+    qr_updated='False'
+    # TODO HACER QUE SEA SOLO PARA EL CURRENT USER
     qr_row= QR.query.filter_by(qr_data=token).first()
-    qr_row.is_used=True
-    db.session.commit()
-    return redirect(url_for('input_qr'))
+    if qr_row:
+        if qr_row.is_used==True:
+            qr_updated='Used'
+            return render_template('update_status.html',qr_updated=qr_updated)
+        qr_row.is_used=True
+        db.session.commit()
+        qr_updated='True'
+    return render_template('update_status.html',qr_updated=qr_updated)
 
 
 
@@ -104,7 +115,7 @@ def logout():
 @app.route('/generate_qr', methods=['POST','GET'])
 @login_required
 def generate_qr():
-    data = 'http://127.0.0.1:5000/update_status_qr/'
+    data = f'{request.url_root}/update_status_qr/'
     num_qr = int(request.form.get('num_qr', 1))  # Número de QRs, por defecto 1
     party_name=request.form['party_name']
     is_first=True
@@ -154,20 +165,48 @@ def generate_qr():
             os.remove(temp_filename)
 
     # Enviar el archivo zip como una descarga
-    return send_file(zip_filename, as_attachment=True, download_name=zip_filename)
+    return send_file(f'{zip_filename}', as_attachment=True, download_name=zip_filename)
+
+
+
+
+
+
 
 
 @app.route('/download_qr', methods=['POST','GET'])
 @login_required
 def download_qr():
     list_of_all_qr = QR.query.filter(and_(QR.user_id == current_user.id, QR.is_first == True)).all()
-    return render_template('download_qr.html',list_of_all_qr=list_of_all_qr)
+    
+
+    
+
+    return render_template('download_qr.html',list_of_all_qr=list_of_all_qr, total_venta=total_venta)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/input_qr/<string:zip>', methods=['POST','GET'])
 @login_required
 def download_one_qr(zip):
     zip_file = zip
-    return send_file(zip_file, as_attachment=True, download_name=zip_file)
+    return send_file(f'{zip_file}', as_attachment=True, download_name=zip_file)
+
     
 @app.route('/input_qr')
 def input_qr():
