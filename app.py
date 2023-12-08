@@ -44,8 +44,11 @@ class QR(db.Model):
     timestamp=db.Column(db.Integer)
     file_zip_name=db.Column(db.String(50))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    
 
+class Article(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    name=db.Column(db.String(100))
+    price=db.Column(db.Integer)
 
 with app.app_context():
     db.create_all()
