@@ -31,6 +31,7 @@ class User(UserMixin ,db.Model):
     email = db.Column(db.String(80))
     password = db.Column(db.String(20))
     qr= db.relationship('QR', backref='owned', lazy='select')
+    article=db.relationship('Article', backref='owned',lazy='select')
     
     def __repr__(self):
         return '<User %r>' % self.name
@@ -49,6 +50,7 @@ class Article(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String(100))
     price=db.Column(db.Integer)
+    user_id=db.Column(db.Integer, db.ForeignKey('user.id'))
 
 with app.app_context():
     db.create_all()
