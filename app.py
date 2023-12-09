@@ -107,9 +107,6 @@ def update_status_qr(qr_data):
     return render_template('update_status.html',qr_updated=qr_updated)
 
 
-
-
-
 @app.route('/logout')
 @login_required
 def logout():
@@ -174,11 +171,6 @@ def generate_qr():
 
 
 
-
-
-
-
-
 @app.route('/download_qr', methods=['POST','GET'])
 @login_required
 def download_qr():
@@ -199,6 +191,12 @@ def add_product():
         db.session.add(new_product)
         db.session.commit()
     return render_template('add_product.html')
+
+@app.route('/products', methods=['GET', 'POST'])
+@login_required
+def products():
+    list_of_products=Article.query.all()
+    return render_template('products.html', list_of_products=list_of_products)
 
 
 @app.route('/input_qr/<string:zip>', methods=['POST','GET'])

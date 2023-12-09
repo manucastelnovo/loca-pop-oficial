@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantina</title>
+</head>
+<body>
+    <h2>Productos</h2>
+    <p>{%for producto in list_of_products%}</p>
+    <p>{{producto.name}}</p>
+    <p>{{producto.price}}</p>
+    <p>{%endfor%}</p>
+    <a href="/add_product">
+        <button>Agregar producto</button>
+    </a>
+</body>
+</html>
