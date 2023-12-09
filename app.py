@@ -195,7 +195,7 @@ def add_product():
 @app.route('/products', methods=['GET', 'POST'])
 @login_required
 def products():
-    list_of_products=Article.query.all()
+    list_of_products=Article.query.filter_by(user_id=current_user.id).all()
     return render_template('products.html', list_of_products=list_of_products)
 
 
