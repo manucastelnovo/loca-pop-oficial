@@ -201,12 +201,6 @@ def add_product():
     return render_template('add_product.html')
 
 
-
-
-
-
-
-
 @app.route('/input_qr/<string:zip>', methods=['POST','GET'])
 @login_required
 def download_one_qr(zip):
