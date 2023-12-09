@@ -197,6 +197,16 @@ def add_product():
 @app.route('/products', methods=['GET', 'POST'])
 @login_required
 def products():
+    if request.method == 'POST':
+    # Aquí obtienes todos los datos enviados desde el formulario
+        product_data = request.form.to_dict(flat=False)
+        print("Datos del formulario:", product_data)
+
+        # Puedes iterar sobre los datos y mostrar tanto el nombre como el valor
+        for field_name, field_values in product_data.items():
+            print(field_name)
+            print(field_values)
+            
     list_of_products=Article.query.filter_by(user_id=current_user.id).all()
     return render_template('products.html', list_of_products=list_of_products)
 
