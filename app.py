@@ -189,21 +189,16 @@ def download_qr():
 
     return render_template('download_qr.html',list_of_all_qr=list_of_all_qr, total_venta=total_venta)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@app.route('/add_product', methods=['GET','POST'])
+@login_required
+def add_product():
+    if request.method == 'POST':
+        name=request.form['name']
+        price=request.form['price']
+        new_product=Article(name=name, price=price, user_id=current_user.id)
+        db.session.add(new_product)
+        db.session.commit()
+    return render_template('add_product.html')
 
 
 @app.route('/input_qr/<string:zip>', methods=['POST','GET'])
