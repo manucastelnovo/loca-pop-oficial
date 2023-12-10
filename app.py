@@ -52,11 +52,16 @@ class Article(db.Model):
     user_id=db.Column(db.Integer, db.ForeignKey('user.id'))
     orders=db.relationship('Order', lazy='select')
     
-
 class Order(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     article_id=db.Column(db.Integer, db.ForeignKey('article.id'))
     amount=db.Column(db.Integer)
+    list_of_orders_id=db.Column(db.Integer, db.ForeignKey('list_of_orders.id'))
+
+class List_of_orders(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    orders_access=db.relationship('Order', lazy='select')
+
 
 
 with app.app_context():
@@ -203,14 +208,19 @@ def add_product():
 @app.route('/products', methods=['GET', 'POST'])
 @login_required
 def products():
+
     if request.method == 'POST':
+        new_list_of_orders=List_of_orders()
+        db.session.add(new_list_of_orders)
+        db.session.commit()
     # Aquí obtienes todos los datos enviados desde el formulario
         product_data = request.form.to_dict(flat=False)
         # Puedes iterar sobre los datos y mostrar tanto el nombre como el valor
         for field_name, field_values in product_data.items():
-            new_order=Order(article_id=int(field_name), amount=int(field_values[0]))
+            new_order=Order(article_id=int(field_name), amount=int(field_values[0]), list_of_orders_id=new_list_of_orders.id)
             db.session.add(new_order)
             db.session.commit()
+
         
 
     list_of_products=Article.query.filter_by(user_id=current_user.id).all()
