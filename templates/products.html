@@ -1,18 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Cantina</title>
+    <script>
+        let list_of_products = [];
+        let list_of_inputs_products = [];
+    </script>
 </head>
-<body>
+
+<body class="bg-gray-300">
+    <nav class="bg-gray-900 isolate">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div class="relative flex h-16 items-center justify-between">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Mobile menu button-->
+                    <button type="button"
+                        class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="absolute -inset-0.5"></span>
+                        <span class="sr-only">Open main menu</span>
+                        <!--
+                  Icon when menu is closed.
+      
+                  Menu open: "hidden", Menu closed: "block"
+                -->
+                        <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                        <!--
+                  Icon when menu is open.
+      
+                  Menu open: "block", Menu closed: "hidden"
+                -->
+                        <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="flex flex-shrink-0 items-center">
+                        <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                            alt="Your Company">
+                    </div>
+                    <div class="hidden sm:ml-6 sm:block">
+                        <div class="flex space-x-4">
+                            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                            <a href="/input_qr" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+                                aria-current="page">Generador de QR</a>
+                            <a href="/products"
+                                class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Cantina</a>
+                            <a href="/download_qr"
+                                class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Descargar
+                                qr</a>
+                            <a href="#"
+                                class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Estadisticas</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <a href="/logout">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                            stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3" />
+                        </svg>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="sm:hidden" id="mobile-menu">
+            <div class="space-y-1 px-2 pb-3 pt-2">
+                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                <a href="#" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
+                    aria-current="page">Dashboard</a>
+                <a href="#"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Team</a>
+                <a href="#"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Projects</a>
+                <a href="#"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Calendar</a>
+            </div>
+        </div>
+    </nav>
     <h2>Productos</h2>
-    <p>{%for producto in list_of_products%}</p>
-    <p>{{producto.name}}</p>
-    <p>{{producto.price}}</p>
-    <p>{%endfor%}</p>
     <a href="/add_product">
         <button>Agregar producto</button>
     </a>
+    <div class="bg-white">
+        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+            <h2 class="text-xl font-bold text-gray-900">Customers also bought</h2>
+
+            <div class="">
+                <form action="/products" method="post" class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                    {%for producto in list_of_products%}
+
+                    <div>
+                        <div class="relative" id="{{producto.id}}">
+                            <div class="relative h-72 w-full overflow-hidden rounded-lg">
+
+                                <img src='{{producto.url}}'
+                                    alt="Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls."
+                                    class="h-full w-full object-cover object-center">
+                            </div>
+                            <div class="relative mt-4">
+                                <h3 class="text-sm font-medium text-gray-900">{{producto.name}}</h3>
+                            </div>
+                            <div
+                                class="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
+                                <div aria-hidden="true"
+                                    class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50">
+                                </div>
+                                <p class="relative text-lg font-semibold text-white">{{producto.price}}</p>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <div
+                                class="relative flex h-10  justify-center rounded-md border border-transparent bg-gray-100  text-sm font-medium text-gray-900 hover:bg-gray-200">
+                                <input min="0" value="0" id="{{producto.id}}_input" name="{{producto.id}}_name" type="number" class="w-full h-full bg-gray-200">
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        list_of_products.push(document.getElementById("{{producto.id}}"));
+                        list_of_inputs_products.push(document.getElementById("{{producto.id}}_input"));
+                    </script>
+                    {%endfor%}
+                    <button type="submit">
+                        Enviar
+                    </button>
+                </form>
+                <script>
+                    list_of_products.forEach((element, index) => {
+                        element.addEventListener("click", () => {
+                            if (list_of_inputs_products[index].value == "") {
+                                list_of_inputs_products[index].value = "0";
+                            }
+                            list_of_inputs_products[index].value = (parseInt(list_of_inputs_products[index].value) + 1).toString();
+                            console.log(list_of_inputs_products[index].value)
+                        });
+                    });
+
+
+                </script>
+                <!-- More products... -->
+            </div>
+        </div>
+    </div>
+
+
+    <p></p>
+    <p></p>
+    <p></p>
 </body>
+
 </html>

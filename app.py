@@ -50,6 +50,7 @@ class Article(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String(100))
     price=db.Column(db.Integer)
+    url=db.Column(db.String(250))
     user_id=db.Column(db.Integer, db.ForeignKey('user.id'))
 
 with app.app_context():
@@ -187,7 +188,8 @@ def add_product():
     if request.method == 'POST':
         name=request.form['name']
         price=request.form['price']
-        new_product=Article(name=name, price=price, user_id=current_user.id)
+        url=request.form['url']
+        new_product=Article(name=name, price=price, user_id=current_user.id, url=url)
         db.session.add(new_product)
         db.session.commit()
     return render_template('add_product.html')
@@ -195,6 +197,16 @@ def add_product():
 @app.route('/products', methods=['GET', 'POST'])
 @login_required
 def products():
+    if request.method == 'POST':
+    # Aquí obtienes todos los datos enviados desde el formulario
+        product_data = request.form.to_dict(flat=False)
+        print("Datos del formulario:", product_data)
+
+        # Puedes iterar sobre los datos y mostrar tanto el nombre como el valor
+        for field_name, field_values in product_data.items():
+            print(field_name)
+            print(field_values)
+            
     list_of_products=Article.query.filter_by(user_id=current_user.id).all()
     return render_template('products.html', list_of_products=list_of_products)
 
