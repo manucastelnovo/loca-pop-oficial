@@ -86,7 +86,7 @@ def download_qr():
 
     
 
-    return render_template('download_qr.html',list_of_all_qr=list_of_all_qr, total_venta=total_venta)
+    return render_template('download_qr.html',list_of_all_qr=list_of_all_qr)
 
 
 def download_one_qr(zip):
