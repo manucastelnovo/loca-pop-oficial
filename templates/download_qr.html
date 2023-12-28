@@ -133,7 +133,7 @@
                         
                         <td
                             class="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-gray-400 sm:table-cell sm:pr-6 lg:pr-8">
-                            <time datetime="2023-01-23T11:00"><a href="{{url_for('download_one_qr',zip=qr['file_zip_name'])}}">Descargar</a></time>
+                            <time datetime="2023-01-23T11:00"><a href="{{url_for('blueprint_qr.download_one_qr',zip=qr['file_zip_name'])}}">Descargar</a></time>
                         </td>
                     </tr>
                     {% endfor %}
