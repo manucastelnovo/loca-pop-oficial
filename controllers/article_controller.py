@@ -28,10 +28,15 @@ def products():
             db.session.add(new_order)
             db.session.commit()
             
-    
-    user_orders=Order.query.filter_by(user_id=current_user.id, article_id=1).all()
-    print(user_orders)
     list_of_products=Article.query.filter_by(user_id=current_user.id).all()
     return render_template('products.html', list_of_products=list_of_products)
 
-
+def statistics():
+    amount_of_articles=0
+    if request.method == 'GET':
+        user_orders=Order.query.filter_by(user_id=current_user.id, article_id=1).all()
+        for order in user_orders:
+            amount_of_articles+=order.amount
+        print(amount_of_articles)
+            
+    return render_template('statistics.html', amount_of_articles=amount_of_articles)
