@@ -33,10 +33,9 @@ def products():
 
 def statistics():
     amount_of_articles=0
-    if request.method == 'GET':
-        user_orders=Order.query.filter_by(user_id=current_user.id, article_id=1).all()
-        for order in user_orders:
-            amount_of_articles+=order.amount
-        print(amount_of_articles)
+    user_orders=Order.query.filter_by(user_id=current_user.id, article_id=1).all()
+    for order in user_orders:
+        amount_of_articles+=order.amount
+    print(amount_of_articles)
             
     return render_template('statistics.html', amount_of_articles=amount_of_articles)
