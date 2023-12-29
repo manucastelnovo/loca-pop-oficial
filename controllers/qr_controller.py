@@ -1,6 +1,5 @@
 from datetime import datetime
 from io import BytesIO
-
 import os
 import secrets
 import zipfile
@@ -83,9 +82,7 @@ def generate_qr():
 def download_qr():
     list_of_all_qr = QR.query.filter(and_(QR.user_id == current_user.id, QR.is_first == True)).all()
     
-
     
-
     return render_template('download_qr.html',list_of_all_qr=list_of_all_qr)
 
 
@@ -95,3 +92,4 @@ def download_one_qr(zip):
 
 def input_qr():
     return render_template('input_qr.html')
+

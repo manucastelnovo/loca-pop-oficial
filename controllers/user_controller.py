@@ -32,6 +32,7 @@ def register():
         return redirect('/login')
     return render_template('register.html')
 
+
 def logout():
     logout_user()
     return redirect('/register')
