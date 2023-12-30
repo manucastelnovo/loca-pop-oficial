@@ -2,6 +2,7 @@ from flask import render_template, request
 from flask_login import current_user
 from models.article import Article
 from models.order import Order
+from models.product_data import Product_data
 from models.list_of_orders import List_of_orders
 from services.database_service import db
 
@@ -34,8 +35,23 @@ def products():
 def statistics():
     amount_of_articles=0
     user_orders=Order.query.filter_by(user_id=current_user.id, article_id=1).all()
+    article_one=Article.query.filter_by(user_id=current_user.id, id=1).first()
+
+    article_id_one_name = article_one.name
+    print(article_id_one_name)
+
     for order in user_orders:
         amount_of_articles+=order.amount
     print(amount_of_articles)
+
+    total_gains_id_one=amount_of_articles*article_one.price
+    print(f'Total gains: {total_gains_id_one} Gs.')
             
+    product_data_one= Product_data(article_name=article_id_one_name, sold_quantity=amount_of_articles, total_gains=total_gains_id_one)
+    print(product_data_one)
+    
     return render_template('statistics.html', amount_of_articles=amount_of_articles)
+
+
+
+
