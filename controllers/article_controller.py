@@ -33,25 +33,18 @@ def products():
     return render_template('products.html', list_of_products=list_of_products)
 
 def statistics():
-    amount_of_articles=0
-    user_orders=Order.query.filter_by(user_id=current_user.id, article_id=1).all()
-    article_one=Article.query.filter_by(user_id=current_user.id, id=1).first()
 
-    article_id_one_name = article_one.name
-    print(article_id_one_name)
+    list_of_row=[]
+    list_of_article=Article.query.filter_by(user_id=current_user.id).all()
 
-    for order in user_orders:
-        amount_of_articles+=order.amount
-    print(amount_of_articles)
-
-    total_gains_id_one=amount_of_articles*article_one.price
-    print(f'Total gains: {total_gains_id_one} Gs.')
-            
-    product_data_one= Product_data(article_name=article_id_one_name, sold_quantity=amount_of_articles, total_gains=total_gains_id_one)
-    print(product_data_one)
-    
-    return render_template('statistics.html', amount_of_articles=amount_of_articles)
-
-
+    for Art in list_of_article:
+        total_amount=0
+        orders_of_articles=Order.query.filter_by(article_id=Art.id).all()
+        for order in orders_of_articles:
+            total_amount+=order.amount
+        total_sold=total_amount*Art.price
+        art_name=Art.name
+        list_of_row.append(Product_data(article_name=art_name,sold_quantity=total_amount,total_gains=total_sold))
+    return render_template('statistics.html',list_of_row=list_of_row)
 
 

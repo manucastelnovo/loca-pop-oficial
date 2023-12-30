@@ -3,11 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Estadisticas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        p {
+            text-align: center;
+            color: #777;
+        }
+    </style>
 </head>
 <body>
-    <div method="get" action="/statistics">
-        {{amount_of_articles}}
-    </div>
+
+    <h1>Balance</h1>
+
+    <table border="1" action="/Statistics">
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad vendida</th>
+            <th>Total de ganancias</th>
+        </tr>
+        {% for row in list_of_row %}
+            <tr>
+                <td>{{ row.article_name }}</td>
+                <td>{{ row.sold_quantity }}</td>
+                <td>{{ row.total_gains }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
 </body>
 </html>
