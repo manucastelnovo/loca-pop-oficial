@@ -10,8 +10,9 @@ from flask import render_template, request, send_file
 from sqlalchemy import and_
 from models.qr import QR
 from services.database_service import db
+from flask_login import login_required
 
-
+@login_required
 def update_status_qr(qr_data):
     token=qr_data
     qr_updated='False'
@@ -26,7 +27,7 @@ def update_status_qr(qr_data):
         qr_updated='True'
     return render_template('update_status.html',qr_updated=qr_updated)
 
-
+@login_required
 def generate_qr():
     data = f'{request.url_root}/update_status_qr/'
     num_qr = int(request.form.get('num_qr', 1))  # Número de QRs, por defecto 1
@@ -79,7 +80,7 @@ def generate_qr():
     return send_file(f'{zip_filename}', as_attachment=True, download_name=zip_filename)
 
 
-
+@login_required
 def download_qr():
     list_of_all_qr = QR.query.filter(and_(QR.user_id == current_user.id, QR.is_first == True)).all()
     
@@ -88,10 +89,10 @@ def download_qr():
 
     return render_template('download_qr.html',list_of_all_qr=list_of_all_qr)
 
-
+@login_required
 def download_one_qr(zip):
     zip_file = zip
     return send_file(f'{zip_file}', as_attachment=True, download_name=zip_file)
-
+@login_required
 def input_qr():
     return render_template('input_qr.html')

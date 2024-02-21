@@ -4,8 +4,9 @@ from models.article import Article
 from models.order import Order
 from models.list_of_orders import List_of_orders
 from services.database_service import db
+from flask_login import login_required
 
-
+@login_required
 def add_product():
     if request.method == 'POST':
         name=request.form['name']
@@ -17,7 +18,7 @@ def add_product():
     return render_template('add_product.html')
 
 
-
+@login_required
 def products():
     if request.method == 'POST':
         new_list_of_orders=List_of_orders()
